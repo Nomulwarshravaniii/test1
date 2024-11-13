@@ -1,0 +1,24 @@
+import os
+print(os.getcwd())
+import pandas as pd
+df
+print(df.columns)
+
+df=pd.read_csv('NaiveBayes.csv')
+#x=df.drop(['Purchased'],axis=1)
+x=df.drop(columns=['Purchased'])
+y=df['Purchased']
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=0,test_size=0.2)
+from sklearn.naive_bayes import GaussianNB
+nb=GaussianNB()
+nb.fit(x_train,y_train)
+y_pred=nb.predict(x_test)
+y_test.value_counts()
+y_pred
+from sklearn.metrics import ConfusionMatrixDisplay
+ConfusionMatrixDisplay.from_predictions(y_test,y_pred);
+from sklearn.metrics import accuracy_score,classification_report
+print(classification_report(y_test,y_pred))
+from sklearn.metrics import accuracy_score
+accuracy=accuracy_score(y_test,y_pred)
