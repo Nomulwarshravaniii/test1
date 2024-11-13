@@ -1,0 +1,32 @@
+import pandas as pd
+df = pd.read_csv('50_Startups.csv')
+df.head()
+df.info()
+print(df.columns)
+#data tranformation-preprocessing
+from sklearn.preprocessing import StandardScaler,LabelEncoder
+scaler=StandardScaler()
+profit_scaled=scaler.fit_transform(df[['PROFIT']])
+le=LabelEncoder()
+df['STATE']=le.fit_transform(df['STATE'])
+from scipy.cluster.hierarchy import dendrogram,linkage
+import matplotlib.pyplot as plt
+
+linked=linkage(profit_scaled,method="ward")
+dendrogram(linked)
+plt.title('hierarchical')
+plt.xlabel('profit')
+plt.ylabel('Eculidean distance')
+plt.show()
+from sklearn.cluster import AgglomerativeClustering #bottom up
+cluster = AgglomerativeClustering(n_clusters=2, metric='euclidean', linkage='ward')
+cluster. fit_predict(profit_scaled)
+agl=AgglomerativeClustering(n_clusters=2)
+alabels=agl.fit_predict(profit_scaled)
+alabels
+from sklearn.metrics import silhouette_score
+
+# Example: data_scaled has shape (n_samples, n_features)
+# cluster_labels is an array of cluster labels for each sample
+silhouette_avg = silhouette_score(profit_scaled, alabels)
+print("Silhouette Score:", silhouette_avg)
