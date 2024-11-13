@@ -1,0 +1,35 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.svm import SVC
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.metrics import accuracy_score
+data=pd.read_csv('bank_transactions_data_2.csv')
+le = LabelEncoder()
+data['TransactionType'] = le.fit_transform(data['TransactionType'])  # Target variable encoding
+data['CustomerOccupation'] = le.fit_transform(data['CustomerOccupation'])
+data['Channel'] = le.fit_transform(data['Channel'])
+data['Location'] = le.fit_transform(data['Location'])
+# Select features and target variable
+X = data[['TransactionAmount','Location', 'CustomerAge', 'TransactionDuration', 'LoginAttempts', 'AccountBalance']]
+y = data['TransactionType']  # Assuming TransactionType as target
+# Split the dataset
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+# Initialize SVM models with different kernels
+svm_linear = SVC(kernel='linear')
+svm_poly = SVC(kernel='poly', degree=3)  # Polynomial degree 3
+# Train the models
+svm_linear.fit(X_train, y_train)
+svm_poly.fit(X_train, y_train)
+# Train the models
+svm_linear.fit(X_train, y_train)
+svm_poly.fit(X_train, y_train)
+# Evaluate and compare accuracy
+accuracy_linear = accuracy_score(y_test, y_pred_linear)
+accuracy_poly = accuracy_score(y_test, y_pred_poly)
+print("Accuracy with Linear Kernel:", accuracy_linear)
+print("Accuracy with Polynomial Kernel:", accuracy_poly)
